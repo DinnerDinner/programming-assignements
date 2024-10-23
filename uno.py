@@ -19,8 +19,8 @@ def start_game():
     
     # each player has 7 cards
     
-    p1 = [deck.pop(0) for _ in range(7)]
-    p2 = [deck.pop(0) for _ in range(7)]
+    p1 = [deck.pop(0) for _ in range(1)]
+    p2 = [deck.pop(0) for _ in range(1)]
 
     # central card
 
@@ -102,9 +102,15 @@ def main_loop(p1, p2, deck, central_card, whose_turn):
             else:
                 print("the player has said uno! you can't call him out!")
 
+
+
+        central_card, p2 = (ai(p2, deck, central_card))
+        print("\n")
+        print(p2)
+
         # switch players
-        p1, p2 = p2, p1
-        whose_turn = (whose_turn + 1) % 2
+        # p1, p2 = p2, p1
+        # whose_turn = (whose_turn + 1) % 2
 
         if len(p1) == 0:
             print("player 1 has won!")
@@ -118,8 +124,28 @@ def main_loop(p1, p2, deck, central_card, whose_turn):
 
             # the code that deals with drawing 
 
+
+def ai(p2, deck, central_card):
+    playable_cards = [x for x in p2 if x[0]==central_card[0] or x[1]==central_card[1]]
+    print(f"\n {playable_cards}")
+    if len(playable_cards)>0:
+        p2.remove(playable_cards[0])
+        central_card = playable_cards.pop(0)
+        print(f"you played: {central_card}\n")
+    else:
+        drawn_card = deck.pop(0)
+        p2.append(drawn_card)
+        print(f"You drew: {drawn_card}")
+
+    return central_card, p2
+
+
+
+
 def valid_play(card1, card2):
     # return true if the number or the colour of the cards in the game
     return card1[0] == card2[0] or card1[1] == card2[1]
+
+
 
 start_game()
